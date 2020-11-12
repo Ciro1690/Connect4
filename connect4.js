@@ -77,7 +77,7 @@ function placeInTable(y, x) {
   } else {
     div.classList.add('p2')
   }
-  const tdCell = document.querySelector(`#\\3${HEIGHT-y-1`} -${x}`)
+  const tdCell = document.querySelector(`#\\3${HEIGHT-y-1} -${x}`)
   tdCell.append(div)
 
   if (currPlayer === 1) {
