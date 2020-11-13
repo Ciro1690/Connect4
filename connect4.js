@@ -20,7 +20,7 @@ function makeBoard() {
   for (let y = 0; y < HEIGHT; y++) {
     let innerArr = []
     for (let x = 0; x < WIDTH; x++) {
-      innerArr.push(null)
+      innerArr.push(undefined)
     }
     board.push(innerArr)
   }
@@ -59,15 +59,20 @@ function makeHtmlBoard() {
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
 function findSpotForCol(x) {
-  // TODO: write the real version of this, rather than always returning 0
-  return 0;
+  // write the real version of this, rather than always returning 0
+  for(let y = HEIGHT-1; y >= 0; y--) {
+    let cell = document.querySelector(`#\\3${y} -${x}`)
+    if (!cell.hasChildNodes()) {
+      return y
+    }
+  }
+  return null
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
 
 function placeInTable(y, x) {
-  // TODO: make a div and insert into correct table cell
-  console.log(HEIGHT-y-1,x)
+  // make a div and insert into correct table cell, update player
   const div = document.createElement('div')
 
   div.classList.add('piece')
@@ -77,20 +82,17 @@ function placeInTable(y, x) {
   } else {
     div.classList.add('p2')
   }
-  const tdCell = document.querySelector(`#\\3${HEIGHT-y-1} -${x}`)
+  let tdCell = document.querySelector(`#\\3${y} -${x}`)
   tdCell.append(div)
-
-  if (currPlayer === 1) {
-    currPlayer = 2
-  } else {
-    currPlayer = 1
-  }
 }
 
 /** endGame: announce game end */
 
 function endGame(msg) {
   // TODO: pop up alert message
+  const endMessage = document.querySelector('#end-message')
+  endMessage.innerHTML = msg
+  resetGame()
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -108,6 +110,7 @@ function handleClick(evt) {
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
   placeInTable(y, x);
+  board[y][x] = currPlayer
 
   // check for win
   if (checkForWin()) {
@@ -115,10 +118,19 @@ function handleClick(evt) {
   }
 
   // check for tie
-  // TODO: check if all cells in board are filled; if so call, call endGame
+  // check if all cells in board are filled; if so call, call endGame
+
+    if (board.every(row => row.every(cell => cell))) {
+        endGame(`This game ends in a tie...`)
+      }
 
   // switch players
-  // TODO: switch currPlayer 1 <-> 2
+  // switch currPlayer 1 <-> 2
+  if (currPlayer === 1) {
+    currPlayer = 2
+  } else {
+    currPlayer = 1
+  }
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
@@ -153,6 +165,18 @@ function checkForWin() {
       }
     }
   }
+}
+
+function resetGame() {
+  const button = document.createElement('button')
+  const buttonDiv = document.querySelector('#reset-button')
+  button.innerHTML = "Play again?"
+  buttonDiv.append(button);
+
+  buttonDiv.addEventListener('click', function () {
+    location.reload()
+    buttonDiv.remove()
+  })
 }
 
 makeBoard();
