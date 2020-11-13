@@ -44,7 +44,7 @@ function makeHtmlBoard() {
   }
   htmlBoard.append(top);
 
-  // TODO: create tr elements for rows and td elements for cells, append cells to rows and then append rows to HTMLboard
+  //create tr elements for rows and td elements for cells, append cells to rows and then append rows to HTMLboard
   for (let y = 0; y < HEIGHT; y++) {
     const row = document.createElement("tr");
     for (let x = 0; x < WIDTH; x++) {
@@ -59,7 +59,7 @@ function makeHtmlBoard() {
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
 function findSpotForCol(x) {
-  // write the real version of this, rather than always returning 0
+  // determine which column space is empty, starting at the bottom, return null if all spaces are full
   for(let y = HEIGHT-1; y >= 0; y--) {
     let cell = document.querySelector(`#\\3${y} -${x}`)
     if (!cell.hasChildNodes()) {
@@ -89,7 +89,7 @@ function placeInTable(y, x) {
 /** endGame: announce game end */
 
 function endGame(msg) {
-  // TODO: pop up alert message
+  // pop up alert message for end game, call resetGame to play again
   const endMessage = document.querySelector('#end-message')
   endMessage.innerHTML = msg
   resetGame()
@@ -108,7 +108,7 @@ function handleClick(evt) {
   }
 
   // place piece in board and add to HTML table
-  // TODO: add line to update in-memory board
+  // update in-memory board
   placeInTable(y, x);
   board[y][x] = currPlayer
 
@@ -121,7 +121,7 @@ function handleClick(evt) {
   // check if all cells in board are filled; if so call, call endGame
 
     if (board.every(row => row.every(cell => cell))) {
-        endGame(`This game ends in a tie...`)
+        endGame(`This game ends in a tie`)
       }
 
   // switch players
@@ -151,7 +151,7 @@ function checkForWin() {
     );
   }
 
-  // TODO: read and understand this code. Add comments to help you.
+  // create variables for all types of win, test each type using _win function, return true if win
 
   for (let y = 0; y < HEIGHT; y++) {
     for (let x = 0; x < WIDTH; x++) {
@@ -167,6 +167,7 @@ function checkForWin() {
   }
 }
 
+// add button to reset game
 function resetGame() {
   const button = document.createElement('button')
   const buttonDiv = document.querySelector('#reset-button')
