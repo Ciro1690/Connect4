@@ -21,19 +21,32 @@ img {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 25px;
+  border: 1px solid black;
 }
 
 /* pieces are div within game table cells: draw as colored circles */
 
 .piece {
-  /* TODO: make into circles */
+  /* make into circles, create animation */
   margin: 5px;
-  width: 80%;
-  height: 80%;
+  position: relative;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
+  animation-name: movePiece;
+  animation-duration: 2s;
 }
 
-/* TODO: make pieces red/blue,  depending on player 1/2 piece */
+@keyframes movePiece {
+    from {
+        transform: translateY(-300px);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* make pieces red/blue,  depending on player 1/2 piece */
 .p1 {
   background-color: #b30000;
 }
