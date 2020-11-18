@@ -10,6 +10,7 @@ const HEIGHT = 6;
 
 let currPlayer = 1; // active player: 1 or 2
 const board = []; // array of rows, each row is array of cells  (board[y][x])
+let gameOver = false
 
 /** makeBoard: create in-JS board structure:
  *    board = array of rows, each row is array of cells  (board[y][x])
@@ -92,44 +93,41 @@ function endGame(msg) {
   // pop up alert message for end game, call resetGame to play again
   const endMessage = document.querySelector('#end-message')
   endMessage.innerHTML = msg
+  gameOver = true;
   resetGame()
 }
 
 /** handleClick: handle click of column top to play piece */
 
 function handleClick(evt) {
-  // get x from ID of clicked cell
-  let x = +evt.target.id;
-
-  // get next spot in column (if none, ignore click)
-  let y = findSpotForCol(x);
-  if (y === null) {
-    return;
-  }
-
-  // place piece in board and add to HTML table
-  // update in-memory board
-  placeInTable(y, x);
-  board[y][x] = currPlayer
-
-  // check for win
-  if (checkForWin()) {
-    return endGame(`Player ${currPlayer} won!`);
-  }
-
-  // check for tie
-  // check if all cells in board are filled; if so call, call endGame
-
-    if (board.every(row => row.every(cell => cell))) {
-        endGame(`This game ends in a tie`)
-      }
-
-  // switch players
-  // switch currPlayer 1 <-> 2
-  if (currPlayer === 1) {
-    currPlayer = 2
-  } else {
-    currPlayer = 1
+  if (!gameOver) {
+    // get x from ID of clicked cell
+    let x = +evt.target.id;
+  
+    // get next spot in column (if none, ignore click)
+    let y = findSpotForCol(x);
+    if (y === null) {
+      return;
+    }
+  
+    // place piece in board and add to HTML table
+    // update in-memory board
+    placeInTable(y, x);
+    board[y][x] = currPlayer
+  
+    // check for win
+    if (checkForWin()) {
+      return endGame(`Player ${currPlayer} won!`);
+    }
+  
+    // check for tie
+    // check if all cells in board are filled; if so call, call endGame
+  
+      if (board.every(row => row.every(cell => cell))) {
+          endGame(`This game ends in a tie`)
+        }
+  
+    currPlayer = currPlayer === 1 ? 2 : 1
   }
 }
 
